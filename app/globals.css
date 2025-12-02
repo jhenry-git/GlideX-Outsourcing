@@ -1,0 +1,26 @@
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Custom colors from your brand */
+:root {
+  --dark-teal: #0077c9;
+  --medium-blue: #28a0e8;
+  --light-cyan: #44c8f5;
+}
+
+body {
+  background-color: var(--gray-light);
+  color: #1a1a1a;
+}
+
+/* Buttons and links */
+a {
+  color: var(--medium-blue);
+  transition: color 0.3s;
+}
+
+a:hover {
+  color: var(--light-cyan);
+}

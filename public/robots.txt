@@ -1,0 +1,7 @@
+# LOCATION: glidex-outsourcing/public/robots.txt
+
+User-agent: *
+# Allow crawling of all pages
+Allow: /
+# Point to the location of the sitemap
+Sitemap: https://www.glidexoutsourcing.com/sitemap.xml
