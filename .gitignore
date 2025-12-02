@@ -26,3 +26,4 @@
 
 # Vercel deployment cache
 .vercel
+.env*.local

@@ -1,0 +1,13 @@
+
+// LOCATION: glidex-outsourcing/jsconfig.json
+
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./*"],
+      "@/lib/*": ["./lib/*"]
+    }
+  },
+  "include": ["**/*.js", "**/*.jsx"]
+}

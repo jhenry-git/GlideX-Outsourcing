@@ -14,10 +14,10 @@ export default function Navbar() {
         <div className="flex items-center">
           <Link href="/" className="flex items-center space-x-2">
             
-            {/* 1. Logo Implementation (Now clearly visible against white background) */}
+            {/* 1. Logo Implementation */}
             <div className="relative w-10 h-10 pt-1">
                 <Image
-                  src="/logo.png" // The blue logo will now stand out
+                  src="/logo.png"
                   alt="GlideX Outsourcing Logo"
                   width={40}
                   height={40}
@@ -25,7 +25,6 @@ export default function Navbar() {
             </div>
             
             {/* 2. Website Name (Wordmark) */}
-            {/* Text color is inherited from the nav tag: text-dark-teal */}
             <span className="text-xl font-semibold tracking-wide">
               GlideX Outsourcing
             </span>
@@ -34,11 +33,14 @@ export default function Navbar() {
         </div>
         {/* === End Logo & Name Combination === */}
 
-        {/* Navigation Links */}
+        {/* Navigation Links (BLOG ADDED) */}
         <div className="space-x-6 flex items-center">
-          {/* We use text-dark-teal for links and hover:text-medium-blue for emphasis */}
           <Link href="/about" className="text-dark-teal hover:text-medium-blue transition duration-200">About Us</Link>
           <Link href="/services" className="text-dark-teal hover:text-medium-blue transition duration-200">Services</Link>
+          
+          {/* NEW: Blog Link */}
+          <Link href="/blog" className="text-dark-teal hover:text-medium-blue transition duration-200">Blog</Link>
+          
           <Link href="/contact" className="text-dark-teal hover:text-medium-blue transition duration-200">Contact</Link>
         </div>
       </div>
