@@ -3,21 +3,33 @@
 import './globals.css';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
+// 1. IMPORT MODERN FONT (Outfit is excellent for Tech/AI)
+import { Outfit } from 'next/font/google';
 
-// Define Viewport settings (Next.js 14+ standard)
+const outfit = Outfit({ 
+  subsets: ['latin'],
+  display: 'swap',
+  variable: '--font-outfit',
+});
+
+// Define Viewport settings
 export const viewport = {
-  themeColor: '#ffffff',
+  themeColor: '#0F2D37', // Matches your Dark Teal branding
 };
 
 export const metadata = {
   metadataBase: new URL('https://www.glidexoutsourcing.com'),
   title: {
-    default: 'GlideX Outsourcing — AI Automation & Web Solutions',
+    default: 'GlideX Outsourcing | AI Automation & Virtual Assistants',
     template: '%s | GlideX Outsourcing',
   },
   description: 'Empowering businesses with world-class Virtual Assistants, AI-powered automation, and custom app development.',
   
-  // === OPEN GRAPH (Facebook, LinkedIn, Discord) ===
+  // 2. MOVED VERIFICATION HERE (Best Practice)
+  verification: {
+    google: 'zMPfGe_H5PywegopHJHHfaMI4VNmkIajUn3F0noIKDc',
+  },
+
   openGraph: {
     type: 'website',
     siteName: 'GlideX Outsourcing',
@@ -26,7 +38,6 @@ export const metadata = {
     description: 'Empowering businesses with world-class Virtual Assistants and AI-powered automation.',
     images: [
       {
-        // Points to public/android-chrome-512x512.png
         url: '/android-chrome-512x512.png', 
         width: 512,
         height: 512,
@@ -34,45 +45,39 @@ export const metadata = {
       },
     ],
   },
-
-  // === TWITTER CARDS ===
   twitter: {
     card: 'summary_large_image',
     title: 'GlideX Outsourcing',
     description: 'Empowering businesses with world-class Virtual Assistants.',
     creator: '@glidex', 
-    // Points to public/android-chrome-512x512.png
     images: ['/android-chrome-512x512.png'],
   },
-
-  // === ICONS & MANIFEST ===
   icons: {
     icon: '/favicon.ico',
     shortcut: '/favicon-16x16.png',
     apple: '/apple-touch-icon.png',
-    other: [
-        {
-          rel: 'manifest',
-          url: '/manifest.json',
-        },
-    ],
+    other: [{ rel: 'manifest', url: '/manifest.json' }],
   },
 };
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en">
-      <body className="font-sans bg-gray-light text-gray-dark">
+    // 3. SMOOTH SCROLLING ENABLED
+    <html lang="en" className={`scroll-smooth ${outfit.variable}`}>
+      <body className="font-sans bg-gray-50 text-slate-800 antialiased selection:bg-light-cyan selection:text-dark-teal">
+        
+        {/* Navbar typically fixed, z-index high */}
         <Navbar />
         
-        {/* Main Content with padding for fixed navbar */}
-        <main className="pt-20">
+        {/* Main Content */}
+        {/* Added min-h-screen to ensure footer pushes down on short pages */}
+        <main className="pt-20 min-h-screen flex flex-col">
           {children}
         </main>
         
         <Footer />
 
-        {/* ORGANIZATION SCHEMA (JSON-LD) for Google Knowledge Graph */}
+        {/* ORGANIZATION SCHEMA */}
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
@@ -85,7 +90,12 @@ export default function RootLayout({ children }) {
               description: "Empowering businesses with world-class Virtual Assistants and AI-powered automation.",
               address: {
                 "@type": "PostalAddress",
-                addressCountry: "KE" // Kenya
+                addressCountry: "KE"
+              },
+              contactPoint: {
+                "@type": "ContactPoint",
+                telephone: "+254768266255",
+                contactType: "customer service"
               },
               sameAs: [
                 "https://twitter.com/glidex",
