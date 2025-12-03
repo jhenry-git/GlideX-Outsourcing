@@ -1,15 +1,19 @@
 // LOCATION: app/blog/[slug]/page.js
 
-import { client } from '../../../lib/sanity/client';
-import { urlForImage } from '@/lib/sanity/image-url';
-import PortableTextComponent from '@/app/components/PortableTextComponent';
+import { client } from '@/lib/sanity/client'; // Updated to @ alias
+import { urlForImage } from '@/lib/sanity/image-url'; // Updated to @ alias
+import PortableTextComponent from '@/app/components/PortableTextComponent'; // Updated to @ alias
 import Link from 'next/link';
 
 // 1. IMPROVED GROQ QUERY
-// Added 'caption' fetching for the main image
+// Updated to include SEO fields (excerpt, dates) and caption
 const POST_QUERY = `*[_type == "post" && slug.current == $slug][0] {
   title,
+  excerpt,      // Added for Metadata
+  description,  // Added for Metadata
   publishedAt,
+  _createdAt,   // Added for Schema
+  _updatedAt,   // Added for Schema
   mainImage {
     asset->{
       _id,
@@ -21,13 +25,40 @@ const POST_QUERY = `*[_type == "post" && slug.current == $slug][0] {
   body
 }`;
 
-// Fetch post
+// --- NEW: SEO METADATA GENERATION ---
+export async function generateMetadata({ params }) {
+  const post = await client.fetch(POST_QUERY, { slug: params.slug });
+
+  if (!post) return {};
+
+  const imageUrl = post.mainImage ? urlForImage(post.mainImage).url() : '';
+
+  return {
+    title: post.title,
+    description: post.excerpt || post.description || '',
+    openGraph: {
+      title: post.title,
+      description: post.excerpt || '',
+      url: `https://www.glidexoutsourcing.com/blog/${params.slug}`,
+      images: imageUrl ? [{ url: imageUrl }] : [],
+      type: 'article',
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: post.title,
+      description: post.excerpt || '',
+      images: [imageUrl],
+    },
+  };
+}
+
+// Fetch post helper
 async function getPost(slug) {
   const post = await client.fetch(POST_QUERY, { slug });
   return post;
 }
 
-// Helper: Format Date nicely (e.g., "January 12, 2025")
+// Helper: Format Date nicely
 const formatDate = (dateString) => {
   if (!dateString) return 'Date not available';
   return new Intl.DateTimeFormat('en-US', {
@@ -38,7 +69,7 @@ const formatDate = (dateString) => {
 export default async function BlogPostPage({ params }) {
   const post = await getPost(params.slug);
 
-  // 404 State - Centered and Clean
+  // 404 State
   if (!post) {
     return (
       <div className="min-h-[60vh] flex flex-col items-center justify-center bg-gray-50 px-6 text-center">
@@ -54,14 +85,17 @@ export default async function BlogPostPage({ params }) {
     );
   }
 
-  // Generate Image URL safely with higher resolution for Hero
+  // Generate Image URL safely (High res for UI)
   const mainImageUrl = post.mainImage
     ? urlForImage(post.mainImage)?.width(1400).height(800).fit('max').auto('format').url()
     : null;
+    
+  // Standard URL for Schema (Simple)
+  const schemaImageUrl = post.mainImage ? urlForImage(post.mainImage).url() : '';
 
   return (
     <article className="bg-gray-50 min-h-screen pb-24 animate-fadeIn">
-      {/* 6. ANIMATION UTILITY (Inline for now to ensure it works without global config) */}
+      {/* ANIMATION UTILITY */}
       <style>{`
         @keyframes fadeIn {
           from { opacity: 0; transform: translateY(10px); }
@@ -72,7 +106,7 @@ export default async function BlogPostPage({ params }) {
         }
       `}</style>
 
-      {/* 5. BACK NAVIGATION (Sticky or Top) */}
+      {/* BACK NAVIGATION */}
       <div className="container mx-auto px-6 max-w-4xl pt-8 pb-6">
         <Link
           href="/blog"
@@ -89,20 +123,20 @@ export default async function BlogPostPage({ params }) {
         
         {/* HEADER SECTION */}
         <header className="text-center mb-10">
-          {/* 3. DATE & META */}
+          {/* DATE & META */}
           <div className="flex items-center justify-center space-x-2 text-sm text-gray-500 font-medium uppercase tracking-wider mb-4">
             <time dateTime={post.publishedAt}>{formatDate(post.publishedAt)}</time>
             <span>•</span>
             <span>Blog Post</span>
           </div>
 
-          {/* 2. TYPOGRAPHY - TITLE */}
+          {/* TITLE */}
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-dark-teal mb-6 leading-tight">
             {post.title}
           </h1>
         </header>
 
-        {/* 1. HERO IMAGE */}
+        {/* HERO IMAGE */}
         {mainImageUrl && (
           <figure className="mb-12 relative group">
             <div className="overflow-hidden rounded-2xl shadow-xl bg-gray-200 aspect-video md:aspect-[21/9] relative">
@@ -113,7 +147,7 @@ export default async function BlogPostPage({ params }) {
                 loading="eager"
               />
             </div>
-            {/* 10. CAPTION */}
+            {/* CAPTION */}
             {post.mainImage.caption && (
               <figcaption className="text-center text-sm text-gray-500 mt-3 italic">
                 {post.mainImage.caption}
@@ -122,7 +156,7 @@ export default async function BlogPostPage({ params }) {
           </figure>
         )}
 
-        {/* 4. CONTENT CONTAINER */}
+        {/* CONTENT CONTAINER */}
         <div className="prose prose-lg prose-teal max-w-none mx-auto
           prose-headings:font-bold prose-headings:text-dark-teal
           prose-p:text-gray-700 prose-p:leading-relaxed
@@ -133,13 +167,12 @@ export default async function BlogPostPage({ params }) {
           <PortableTextComponent blocks={post.body} />
         </div>
 
-        {/* FOOTER / SHARE / TAGS AREA */}
+        {/* FOOTER / SHARE */}
         <div className="mt-16 pt-10 border-t border-gray-200 flex flex-col md:flex-row items-center justify-between">
           <p className="text-gray-500 mb-4 md:mb-0">
             Thanks for reading!
           </p>
           <div className="flex gap-4">
-             {/* You can add social share buttons here later */}
              <Link
               href="/blog"
               className="text-medium-blue font-semibold hover:underline"
@@ -150,6 +183,25 @@ export default async function BlogPostPage({ params }) {
         </div>
 
       </div>
+
+      {/* --- NEW: STRUCTURED DATA (JSON-LD) --- */}
+      <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "BlogPosting",
+              headline: post.title,
+              image: schemaImageUrl,
+              author: {
+                "@type": "Organization",
+                name: "GlideX Outsourcing",
+              },
+              datePublished: post._createdAt,
+              dateModified: post._updatedAt,
+            }),
+          }}
+        />
     </article>
   );
 }
