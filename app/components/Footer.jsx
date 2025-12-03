@@ -1,109 +1,140 @@
 // LOCATION: glidex-outsourcing/app/components/Footer.jsx
+'use client';
+
+import React from 'react';
 import Link from 'next/link';
+import { Mail, Phone, MapPin, ArrowUpRight, Github, Twitter, Linkedin } from 'lucide-react';
 
 export default function Footer() {
+  const currentYear = new Date().getFullYear();
+
   return (
-    <footer className="relative bg-dark-teal text-white pt-20 pb-10 overflow-hidden">
-      {/* Decorative Background Element (Futuristic Glow) */}
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-1 bg-gradient-to-r from-transparent via-light-cyan to-transparent opacity-50"></div>
+    <footer className="relative bg-[#0B1120] border-t border-slate-800 pt-20 pb-10 overflow-hidden text-slate-400 font-sans">
       
+      {/* Background Ambience (Subtle) */}
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-3xl h-[1px] bg-gradient-to-r from-transparent via-cyan-500/50 to-transparent"></div>
+      <div className="absolute bottom-0 right-0 w-[300px] h-[300px] bg-blue-900/10 blur-[100px] rounded-full pointer-events-none -z-10" />
+
       <div className="container mx-auto px-6 relative z-10">
         <div className="grid md:grid-cols-4 gap-12 mb-16">
           
-          {/* COLUMN 1: BRANDING */}
-          <div className="md:col-span-1">
-            <Link href="/" className="inline-block">
-              <h3 className="font-bold text-3xl mb-4 text-white tracking-tight">
-                GlideX <span className="text-light-cyan">.</span>
-              </h3>
-            </Link>
-            <p className="text-gray-300 text-sm leading-relaxed mb-6">
-              Empowering businesses with world-class Virtual Assistants. 
-              Efficiency meets innovation.
-            </p>
-            {/* Social Placeholders (Futuristic Circles) */}
-            <div className="flex space-x-4">
-              {['Twitter', 'LinkedIn', 'Instagram'].map((social) => (
-                <div key={social} className="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center hover:bg-light-cyan hover:text-dark-teal transition-all duration-300 cursor-pointer">
-                  <span className="sr-only">{social}</span>
-                  <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg>
+          {/* COLUMN 1: BRAND IDENTITY */}
+          <div className="md:col-span-2">
+            <Link href="/" className="inline-block mb-6 group">
+              <span className="text-2xl font-bold text-white tracking-tight flex items-center gap-2">
+                <div className="w-8 h-8 rounded-lg bg-cyan-500/10 border border-cyan-500/50 flex items-center justify-center text-cyan-400">
+                  <span className="font-mono font-bold">G</span>
                 </div>
-              ))}
+                GlideX Outsourcing
+              </span>
+            </Link>
+            <p className="text-lg text-slate-400 mb-8 max-w-sm leading-relaxed">
+              Empowering forward-thinking businesses with operational infrastructure and world-class virtual units.
+            </p>
+            
+            {/* Social / Tech Links */}
+            <div className="flex gap-4">
+              <SocialIcon Icon={Twitter} href="#" />
+              <SocialIcon Icon={Linkedin} href="#" />
+              <SocialIcon Icon={Github} href="#" />
             </div>
           </div>
 
-          {/* COLUMN 2: LINKS */}
+          {/* COLUMN 2: NAVIGATION */}
           <div>
-            <h4 className="font-bold text-lg mb-6 text-white border-b-2 border-light-cyan/30 inline-block pb-1">Explore</h4>
-            <ul className="space-y-3">
-              {[
-                { name: 'About Us', path: '/about' },
-                { name: 'Services', path: '/services' },
-                { name: 'Hire a VA', path: '/contact' },
-                { name: 'Blog', path: '/blog' }
-              ].map((link) => (
-                <li key={link.name}>
-                  <Link 
-                    href={link.path} 
-                    className="text-gray-300 hover:text-light-cyan transition-all duration-300 flex items-center group"
-                  >
-                    <span className="w-0 h-0.5 bg-light-cyan mr-0 group-hover:w-3 group-hover:mr-2 transition-all duration-300"></span>
-                    {link.name}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* COLUMN 3: CONTACT (Improved UX) */}
-          <div>
-            <h4 className="font-bold text-lg mb-6 text-white border-b-2 border-light-cyan/30 inline-block pb-1">Contact</h4>
+            <h3 className="font-mono text-sm font-bold text-cyan-400 uppercase tracking-widest mb-6">
+              Navigation_Module
+            </h3>
             <ul className="space-y-4">
-              <li className="flex items-start space-x-3">
-                <svg className="w-5 h-5 text-light-cyan mt-1 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path></svg>
-                <a href="tel:+254768266255" className="text-gray-300 hover:text-white transition-colors">
-                  +254 768 266 255
-                </a>
-              </li>
-              <li className="flex items-start space-x-3">
-                <svg className="w-5 h-5 text-light-cyan mt-1 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
-                <a href="mailto:info@glidexoutsourcing.com" className="text-gray-300 hover:text-white transition-colors break-words">
-                  info@glidexoutsourcing.com
-                </a>
-              </li>
-              <li className="flex items-start space-x-3">
-                <svg className="w-5 h-5 text-light-cyan mt-1 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
-                <span className="text-gray-300">Nairobi, Kenya</span>
-              </li>
+              <FooterLink href="/about" label="About Us" />
+              <FooterLink href="/services" label="Capabilities" />
+              <FooterLink href="/contact" label="Initiate Protocol" />
+              <FooterLink href="/blog" label="Intel" />
             </ul>
           </div>
 
-          {/* COLUMN 4: NEWSLETTER (New Feature) */}
+          {/* COLUMN 3: CONTACT DATA */}
           <div>
-            <h4 className="font-bold text-lg mb-6 text-white border-b-2 border-light-cyan/30 inline-block pb-1">Stay Ahead</h4>
-            <p className="text-sm text-gray-400 mb-4">Join our network for the latest automation tips.</p>
-            <form className="flex flex-col space-y-2">
-              <input 
-                type="email" 
-                placeholder="Enter your email" 
-                className="bg-white/5 border border-white/10 rounded-lg px-4 py-2 text-sm text-white focus:outline-none focus:border-light-cyan focus:bg-white/10 transition-all placeholder-gray-500"
-              />
-              <button className="bg-medium-blue text-white px-4 py-2 rounded-lg text-sm font-semibold hover:bg-light-cyan hover:text-dark-teal transition-all duration-300 shadow-lg shadow-medium-blue/20">
-                Subscribe
-              </button>
-            </form>
+            <h3 className="font-mono text-sm font-bold text-cyan-400 uppercase tracking-widest mb-6">
+              Comms_Channel
+            </h3>
+            <ul className="space-y-6">
+              <li className="flex items-start gap-3 group">
+                <Phone className="w-5 h-5 text-slate-500 group-hover:text-cyan-400 transition-colors mt-1" />
+                <div>
+                  <span className="block text-xs text-slate-600 font-mono mb-1">PHONE_LINE</span>
+                  <a href="tel:+254768266255" className="text-slate-300 hover:text-white transition-colors font-mono">
+                    +254 768 266 255
+                  </a>
+                </div>
+              </li>
+              
+              <li className="flex items-start gap-3 group">
+                <Mail className="w-5 h-5 text-slate-500 group-hover:text-cyan-400 transition-colors mt-1" />
+                <div>
+                  <span className="block text-xs text-slate-600 font-mono mb-1">SECURE_MAIL</span>
+                  <a href="mailto:info@glidexoutsourcing.com" className="text-slate-300 hover:text-white transition-colors font-mono">
+                    info@glidexoutsourcing.com
+                  </a>
+                </div>
+              </li>
+
+              <li className="flex items-start gap-3 group">
+                <MapPin className="w-5 h-5 text-slate-500 group-hover:text-cyan-400 transition-colors mt-1" />
+                <div>
+                  <span className="block text-xs text-slate-600 font-mono mb-1">HQ_COORDINATES</span>
+                  <span className="text-slate-300">Nairobi, Kenya</span>
+                </div>
+              </li>
+            </ul>
           </div>
         </div>
 
         {/* BOTTOM BAR */}
-        <div className="border-t border-white/10 pt-8 flex flex-col md:flex-row items-center justify-between text-xs text-gray-500">
-          <p>© 2025 GlideX Outsourcing. All rights reserved.</p>
-          <div className="flex space-x-6 mt-4 md:mt-0">
-            <Link href="/privacy" className="hover:text-light-cyan transition-colors">Privacy Policy</Link>
-            <Link href="/terms" className="hover:text-light-cyan transition-colors">Terms of Service</Link>
+        <div className="pt-8 border-t border-slate-800 flex flex-col md:flex-row justify-between items-center gap-4">
+          <div className="text-sm text-slate-500">
+            © {currentYear} GlideX Outsourcing. All Systems Operational.
+          </div>
+          
+          <div className="flex items-center gap-6">
+            <Link href="/privacy" className="text-xs font-mono text-slate-600 hover:text-cyan-400 transition-colors">
+              PRIVACY_POLICY
+            </Link>
+            <Link href="/terms" className="text-xs font-mono text-slate-600 hover:text-cyan-400 transition-colors">
+              TERMS_OF_SERVICE
+            </Link>
+            
+            {/* System Status Indicator */}
+            <div className="flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20">
+              <span className="relative flex h-2 w-2">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+              </span>
+              <span className="text-[10px] font-mono font-bold text-emerald-500 tracking-wider">ONLINE</span>
+            </div>
           </div>
         </div>
       </div>
     </footer>
   );
 }
+
+// --- SUB-COMPONENTS ---
+
+const FooterLink = ({ href, label }) => (
+  <li>
+    <Link href={href} className="group flex items-center text-slate-400 hover:text-white transition-colors">
+      <ArrowUpRight className="w-3 h-3 mr-2 opacity-0 -ml-5 group-hover:opacity-100 group-hover:ml-0 transition-all text-cyan-400" />
+      <span>{label}</span>
+    </Link>
+  </li>
+);
+
+const SocialIcon = ({ Icon, href }) => (
+  <a
+    href={href}
+    className="w-10 h-10 rounded-lg bg-slate-900 border border-slate-700 flex items-center justify-center text-slate-400 hover:text-cyan-400 hover:border-cyan-500/50 hover:bg-slate-800 transition-all duration-300"
+  >
+    <Icon size={18} />
+  </a>
+);
