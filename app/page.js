@@ -15,8 +15,8 @@ const HERO_SLIDES = [
   {
     id: 1,
     badge: 'SYSTEM ARCHITECTURE: V2.0 LIVE',
-    title: 'Empowering Businesses',
-    highlight: 'With Worldclass VAs',
+    title: 'Future-Proof',
+    highlight: 'Workforce Solutions',
     desc: 'GlideX isn\'t just outsourcing. It\'s remote operational architecture. We build dedicated, tech-enabled support units that integrate directly into your stack.',
     color: 'from-cyan-400 via-blue-500 to-purple-600'
   },
@@ -33,7 +33,7 @@ const HERO_SLIDES = [
     badge: 'TECH_INTEGRATION: ACTIVE',
     title: 'Plug & Play',
     highlight: 'Tech Integration',
-    desc: 'Stop training form zero. Our VAs come pre-equipped with knowledge of modern SaaS tools (Slack, Jira, HubSpot) to hit the ground running.',
+    desc: 'Stop training from zero. Our VAs come pre-equipped with knowledge of modern SaaS tools (Slack, Jira, HubSpot) to hit the ground running.',
     color: 'from-orange-400 via-amber-500 to-red-600'
   }
 ];
@@ -212,13 +212,24 @@ export default function HomePage() {
               </Link>
            </div>
            
+           {/* IMAGE SECTION REPLACEMENT */}
            <div className="relative h-[400px] bg-gradient-to-tr from-slate-800 to-slate-900 rounded-2xl border border-slate-700 p-1">
-              <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20"></div>
+              <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 pointer-events-none z-10"></div>
+              
               <div className="h-full w-full rounded-xl bg-slate-900 flex items-center justify-center overflow-hidden relative">
-                 <Globe size={200} className="text-slate-800 animate-pulse" strokeWidth={0.5} />
+                 {/* Replaced Icon with actual Image */}
+                 <img
+                    src="/slid/03.jpg"
+                    alt="GlideX Mission"
+                    className="w-full h-full object-cover"
+                 />
+                 
+                 {/* Overlay to ensure image blends with dark theme */}
+                 <div className="absolute inset-0 bg-slate-900/30 mix-blend-multiply" />
                  <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-transparent to-transparent" />
               </div>
            </div>
+           
         </div>
       </section>
 
