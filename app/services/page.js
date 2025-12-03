@@ -1,9 +1,9 @@
 // LOCATION: glidex-outsourcing/app/services/page.js
-'use client'; 
+'use client';
 
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Server, Stethoscope, ShoppingBag, ArrowRight } from 'lucide-react'; 
+import { Server, Stethoscope, ShoppingBag, ArrowRight } from 'lucide-react';
 import ServicesList from '../components/ServicesList';
 import ProcessSection from '../components/ProcessSection';
 
@@ -33,9 +33,9 @@ export default function ServicesPage() {
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[600px] bg-blue-600/20 rounded-full blur-[120px] -z-10" />
         
         <div className="container mx-auto text-center">
-          <motion.div 
-            initial="hidden" 
-            animate="visible" 
+          <motion.div
+            initial="hidden"
+            animate="visible"
             variants={fadeInUp}
           >
             <span className="text-cyan-300 font-bold tracking-widest text-sm uppercase mb-4 block drop-shadow-[0_0_10px_rgba(34,211,238,0.5)]">
@@ -45,14 +45,14 @@ export default function ServicesPage() {
               Scalable Solutions <br /> For The Digital Age
             </h1>
             <p className="text-2xl text-slate-100 max-w-2xl mx-auto mb-8 font-medium">
-              Whether you need a single specialist or a full-scale operational unit, 
+              Whether you need a single specialist or a full-scale operational unit,
               we build the infrastructure that powers your growth.
             </p>
           </motion.div>
         </div>
       </section>
 
-      {/* 2. CORE SERVICES "LIGHT DECK" 
+      {/* 2. CORE SERVICES "LIGHT DECK"
           This white panel ensures your existing dark-text component is readable.
       */}
       <div className="relative z-10 mx-4 md:mx-12 rounded-3xl bg-slate-50 border border-slate-200 shadow-2xl overflow-hidden">
@@ -69,9 +69,9 @@ export default function ServicesPage() {
         <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 pointer-events-none"></div>
         
         <div className="container mx-auto max-w-7xl">
-          <motion.div 
-            initial="hidden" 
-            whileInView="visible" 
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
             viewport={{ once: true }}
             variants={fadeInUp}
             className="text-center mb-16"
@@ -80,7 +80,7 @@ export default function ServicesPage() {
             <p className="text-xl text-slate-200">Tailored workflows designed for specific industry demands.</p>
           </motion.div>
 
-          <motion.div 
+          <motion.div
             variants={staggerContainer}
             initial="hidden"
             whileInView="visible"
@@ -120,7 +120,7 @@ export default function ServicesPage() {
 
 // MODERNIZED CARD COMPONENT (High Contrast Version)
 const ServiceCard = ({ title, description, Icon, accentColor, borderColor }) => (
-  <motion.div 
+  <motion.div
     variants={fadeInUp}
     whileHover={{ y: -10 }}
     className={`
