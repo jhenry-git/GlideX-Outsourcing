@@ -58,7 +58,7 @@ export default function Navbar() {
   }, [isMobileMenuOpen]);
 
   const navItems = [
-    { name: 'About Us', href: '/about-us' },
+    { name: 'About Us', href: '/about' },
     { name: 'Services', href: '/services' },
     { name: 'Blog', href: '/blog' },
   ];
