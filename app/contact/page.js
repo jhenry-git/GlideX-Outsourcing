@@ -3,11 +3,13 @@
 "use client";
 
 import { useState } from 'react';
-import { Mail, Phone, MapPin, Send, MessageSquare, Clock, Zap, CheckCircle, AlertCircle } from 'lucide-react';
+import { Mail, Phone, MapPin, Send, MessageSquare, Clock, Zap, CheckCircle, AlertCircle, Calendar } from 'lucide-react';
 
-// NOTE: These constants need to be manually updated if they point to an email service.
+// API CONFIGURATION
 const FORM_ENDPOINT = "https://api.web3forms.com/submit";
 const ACCESS_KEY = "a752636a-7ef3-4583-8bb1-c589fc023c90";
+// ADDED: The specific Calendly link for your strategy calls
+const CALENDLY_LINK = "https://calendly.com/glide-xpp/30min";
 
 export default function ContactPage() {
   const [submitted, setSubmitted] = useState(false);
@@ -31,7 +33,8 @@ export default function ContactPage() {
 
         if (response.ok) {
             setSubmitted(true);
-            e.target.reset();
+            // Optional: Scroll to top of form area if needed
+            // window.scrollTo({ top: 0, behavior: 'smooth' });
         } else {
             setError('Transmission failed. Please retry protocol.');
         }
@@ -74,103 +77,147 @@ export default function ContactPage() {
 
         <div className="grid md:grid-cols-2 gap-8 lg:gap-12 items-start">
           
-          {/* LEFT COLUMN: CONTACT FORM */}
-          <div className="bg-slate-900/50 backdrop-blur-md border border-slate-800 p-8 rounded-3xl relative overflow-hidden shadow-2xl">
+          {/* LEFT COLUMN: CONTACT FORM / SUCCESS STATE */}
+          <div className="bg-slate-900/50 backdrop-blur-md border border-slate-800 p-8 rounded-3xl relative overflow-hidden shadow-2xl transition-all duration-500">
             {/* Top Border Glow */}
             <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-cyan-500 to-transparent opacity-50" />
             
-            <h2 className="text-2xl font-bold text-white mb-2 flex items-center gap-3">
-              <MessageSquare className="text-cyan-400" size={24} />
-              Send Transmission
-            </h2>
-            
-            {/* RESPONSE TIME GUARANTEE BADGE */}
-            <div className="mb-8 mt-4 flex items-center gap-3 bg-emerald-900/20 border border-emerald-500/30 p-3 rounded-lg">
-                <div className="p-1.5 bg-emerald-500/20 rounded-full animate-pulse">
-                    <Zap size={16} className="text-emerald-400" fill="currentColor" />
-                </div>
-                <div>
-                    <p className="text-emerald-400 font-bold text-sm uppercase tracking-wide">Priority Response Active</p>
-                    <p className="text-emerald-500/80 text-xs font-mono">Estimated Reply Time: &lt; 60 Minutes</p>
-                </div>
-            </div>
-
+            {/* --- SUCCESS STATE (CALENDLY PROMPT) --- */}
             {submitted ? (
-                <div className="bg-emerald-900/10 border border-emerald-500/30 rounded-xl p-8 text-center animate-fadeIn">
-                    <div className="w-16 h-16 bg-emerald-500/20 text-emerald-400 rounded-full flex items-center justify-center mx-auto mb-4">
-                        <CheckCircle size={32} />
+                <div className="text-center animate-fadeIn py-8">
+                    {/* Success Icon */}
+                    <div className="w-20 h-20 bg-emerald-500/20 text-emerald-400 rounded-full flex items-center justify-center mx-auto mb-6 shadow-[0_0_30px_rgba(16,185,129,0.2)]">
+                        <CheckCircle size={40} />
                     </div>
-                    <h3 className="text-xl font-bold text-white mb-2">Transmission Received</h3>
-                    <p className="text-slate-400">Our team is analyzing your request. Stand by for contact.</p>
+                    
+                    <h2 className="text-2xl font-bold text-white mb-2">Transmission Received</h2>
+                    <p className="text-slate-400 mb-8 max-w-sm mx-auto">
+                        Your operational data has been logged. Our engineers are reviewing your requirements.
+                    </p>
+
+                    {/* SEPARATOR LINE */}
+                    <div className="flex items-center gap-4 mb-8">
+                        <div className="h-[1px] bg-slate-800 flex-grow" />
+                        <span className="text-xs font-mono text-cyan-500 uppercase tracking-widest">Phase 2: Synchronization</span>
+                        <div className="h-[1px] bg-slate-800 flex-grow" />
+                    </div>
+
+                    {/* CALENDLY CTA */}
+                    <div className="bg-gradient-to-br from-slate-800 to-slate-900 border border-cyan-500/30 rounded-2xl p-6 relative overflow-hidden group">
+                        <div className="relative z-10">
+                            <h3 className="text-lg font-bold text-white mb-2">Fast-Track Your Deployment</h3>
+                            <p className="text-sm text-slate-400 mb-6">
+                                Skip the email queue. Synchronize your calendar with our lead architect immediately.
+                            </p>
+                            
+                            <a
+                                href={CALENDLY_LINK}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="inline-flex items-center justify-center w-full px-6 py-4 bg-cyan-600 hover:bg-cyan-500 text-white font-bold rounded-xl transition-all shadow-[0_0_20px_rgba(8,145,178,0.4)] hover:shadow-[0_0_30px_rgba(8,145,178,0.6)] hover:-translate-y-1"
+                            >
+                                <Calendar className="mr-2" size={20} />
+                                BOOK STRATEGY CALL
+                            </a>
+                        </div>
+                        {/* Background Decoration */}
+                        <div className="absolute -right-10 -top-10 w-32 h-32 bg-cyan-500/10 blur-[40px] rounded-full pointer-events-none group-hover:bg-cyan-500/20 transition-all" />
+                    </div>
+
+                    <button
+                        onClick={() => setSubmitted(false)}
+                        className="mt-8 text-xs font-mono text-slate-500 hover:text-white underline decoration-slate-700 underline-offset-4 transition-colors"
+                    >
+                        Send Another Transmission
+                    </button>
                 </div>
             ) : (
-                <form className="space-y-5" onSubmit={handleSubmit}>
-                    <input type="hidden" name="access_key" value={ACCESS_KEY} />
+                /* --- FORM STATE --- */
+                <>
+                    <h2 className="text-2xl font-bold text-white mb-2 flex items-center gap-3">
+                    <MessageSquare className="text-cyan-400" size={24} />
+                    Send Transmission
+                    </h2>
                     
-                    {error && (
-                        <div className="p-3 bg-red-900/20 border border-red-500/50 rounded-lg text-red-400 text-sm flex items-center gap-2">
-                            <AlertCircle size={16} /> {error}
+                    {/* PRIORITY BADGE */}
+                    <div className="mb-8 mt-4 flex items-center gap-3 bg-emerald-900/20 border border-emerald-500/30 p-3 rounded-lg">
+                        <div className="p-1.5 bg-emerald-500/20 rounded-full animate-pulse">
+                            <Zap size={16} className="text-emerald-400" fill="currentColor" />
                         </div>
-                    )}
-
-                    <div className="grid md:grid-cols-2 gap-5">
-                        <div className="space-y-2">
-                            <label className="text-xs font-mono text-slate-500 uppercase tracking-wider">Identity</label>
-                            <input
-                                type="text"
-                                name="name"
-                                placeholder="Full Name"
-                                className="w-full bg-slate-950/50 border border-slate-700 text-white rounded-xl p-3 focus:outline-none focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500/50 transition-all placeholder:text-slate-600"
-                                required
-                            />
-                        </div>
-                        <div className="space-y-2">
-                            <label className="text-xs font-mono text-slate-500 uppercase tracking-wider">Comms Link</label>
-                            <input
-                                type="email"
-                                name="email"
-                                placeholder="Work Email"
-                                className="w-full bg-slate-950/50 border border-slate-700 text-white rounded-xl p-3 focus:outline-none focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500/50 transition-all placeholder:text-slate-600"
-                                required
-                            />
+                        <div>
+                            <p className="text-emerald-400 font-bold text-sm uppercase tracking-wide">Priority Response Active</p>
+                            <p className="text-emerald-500/80 text-xs font-mono">Estimated Reply Time: &lt; 60 Minutes</p>
                         </div>
                     </div>
 
-                    <div className="space-y-2">
-                        <label className="text-xs font-mono text-slate-500 uppercase tracking-wider">Frequency (Optional)</label>
-                        <input
-                            type="tel"
-                            name="phone"
-                            placeholder="Phone Number"
-                            className="w-full bg-slate-950/50 border border-slate-700 text-white rounded-xl p-3 focus:outline-none focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500/50 transition-all placeholder:text-slate-600"
-                        />
-                    </div>
-
-                    <div className="space-y-2">
-                        <label className="text-xs font-mono text-slate-500 uppercase tracking-wider">Mission Details</label>
-                        <textarea
-                            name="message"
-                            placeholder="Describe your operational needs..."
-                            rows="4"
-                            className="w-full bg-slate-950/50 border border-slate-700 text-white rounded-xl p-3 focus:outline-none focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500/50 transition-all placeholder:text-slate-600 resize-none"
-                            required
-                        ></textarea>
-                    </div>
-                    
-                    <button
-                        type="submit"
-                        disabled={loading}
-                        className="w-full group relative overflow-hidden bg-cyan-600 hover:bg-cyan-500 text-white font-bold py-4 rounded-xl transition-all duration-300 shadow-[0_0_20px_rgba(8,145,178,0.3)] hover:shadow-[0_0_30px_rgba(8,145,178,0.5)] hover:scale-[1.02]"
-                    >
-                        <span className="relative z-10 flex items-center justify-center gap-2">
-                            {loading ? 'UPLOADING...' : 'INITIATE TRANSMISSION'}
-                            {!loading && <Send size={18} className="group-hover:translate-x-1 transition-transform" />}
-                        </span>
+                    <form className="space-y-5" onSubmit={handleSubmit}>
+                        <input type="hidden" name="access_key" value={ACCESS_KEY} />
                         
-                        {/* Button Shine Effect */}
-                        <div className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-700 bg-gradient-to-r from-transparent via-white/20 to-transparent" />
-                    </button>
-                </form>
+                        {error && (
+                            <div className="p-3 bg-red-900/20 border border-red-500/50 rounded-lg text-red-400 text-sm flex items-center gap-2">
+                                <AlertCircle size={16} /> {error}
+                            </div>
+                        )}
+
+                        <div className="grid md:grid-cols-2 gap-5">
+                            <div className="space-y-2">
+                                <label className="text-xs font-mono text-slate-500 uppercase tracking-wider">Identity</label>
+                                <input
+                                    type="text"
+                                    name="name"
+                                    placeholder="Full Name"
+                                    className="w-full bg-slate-950/50 border border-slate-700 text-white rounded-xl p-3 focus:outline-none focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500/50 transition-all placeholder:text-slate-600"
+                                    required
+                                />
+                            </div>
+                            <div className="space-y-2">
+                                <label className="text-xs font-mono text-slate-500 uppercase tracking-wider">Comms Link</label>
+                                <input
+                                    type="email"
+                                    name="email"
+                                    placeholder="Work Email"
+                                    className="w-full bg-slate-950/50 border border-slate-700 text-white rounded-xl p-3 focus:outline-none focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500/50 transition-all placeholder:text-slate-600"
+                                    required
+                                />
+                            </div>
+                        </div>
+
+                        <div className="space-y-2">
+                            <label className="text-xs font-mono text-slate-500 uppercase tracking-wider">Frequency (Optional)</label>
+                            <input
+                                type="tel"
+                                name="phone"
+                                placeholder="Phone Number"
+                                className="w-full bg-slate-950/50 border border-slate-700 text-white rounded-xl p-3 focus:outline-none focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500/50 transition-all placeholder:text-slate-600"
+                            />
+                        </div>
+
+                        <div className="space-y-2">
+                            <label className="text-xs font-mono text-slate-500 uppercase tracking-wider">Mission Details</label>
+                            <textarea
+                                name="message"
+                                placeholder="Describe your operational needs..."
+                                rows="4"
+                                className="w-full bg-slate-950/50 border border-slate-700 text-white rounded-xl p-3 focus:outline-none focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500/50 transition-all placeholder:text-slate-600 resize-none"
+                                required
+                            ></textarea>
+                        </div>
+                        
+                        <button
+                            type="submit"
+                            disabled={loading}
+                            className="w-full group relative overflow-hidden bg-cyan-600 hover:bg-cyan-500 text-white font-bold py-4 rounded-xl transition-all duration-300 shadow-[0_0_20px_rgba(8,145,178,0.3)] hover:shadow-[0_0_30px_rgba(8,145,178,0.5)] hover:scale-[1.02]"
+                        >
+                            <span className="relative z-10 flex items-center justify-center gap-2">
+                                {loading ? 'UPLOADING...' : 'INITIATE TRANSMISSION'}
+                                {!loading && <Send size={18} className="group-hover:translate-x-1 transition-transform" />}
+                            </span>
+                            
+                            {/* Button Shine Effect */}
+                            <div className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-700 bg-gradient-to-r from-transparent via-white/20 to-transparent" />
+                        </button>
+                    </form>
+                </>
             )}
           </div>
 
