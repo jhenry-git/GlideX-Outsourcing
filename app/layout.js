@@ -5,6 +5,8 @@ import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 // 1. IMPORT MODERN FONT (Outfit is excellent for Tech/AI)
 import { Outfit } from 'next/font/google';
+// 2. IMPORT NEXT SCRIPT (Required for Google Ads/Analytics)
+import Script from 'next/script';
 
 const outfit = Outfit({ 
   subsets: ['latin'],
@@ -25,7 +27,7 @@ export const metadata = {
   },
   description: 'Empowering businesses with world-class Virtual Assistants, AI-powered automation, and custom app development.',
   
-  // 2. MOVED VERIFICATION HERE (Best Practice)
+  // MOVED VERIFICATION HERE (Best Practice)
   verification: {
     google: 'zMPfGe_H5PywegopHJHHfaMI4VNmkIajUn3F0noIKDc',
   },
@@ -62,10 +64,26 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    // 3. SMOOTH SCROLLING ENABLED
+    // SMOOTH SCROLLING ENABLED
     <html lang="en" className={`scroll-smooth ${outfit.variable}`}>
       <body className="font-sans bg-gray-50 text-slate-800 antialiased selection:bg-light-cyan selection:text-dark-teal">
         
+        {/* --- GOOGLE ADS / ANALYTICS TRACKING --- */}
+        <Script
+          src="https://www.googletagmanager.com/gtag/js?id=AW-17468844041"
+          strategy="afterInteractive"
+        />
+        <Script id="google-ads-tag" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+
+            gtag('config', 'AW-17468844041');
+          `}
+        </Script>
+        {/* --------------------------------------- */}
+
         {/* Navbar typically fixed, z-index high */}
         <Navbar />
         
