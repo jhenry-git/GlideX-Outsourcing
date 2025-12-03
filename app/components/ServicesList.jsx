@@ -39,15 +39,15 @@ export default function ServicesList() {
       >
         <AnimatePresence>
           {visibleServices.map((s, i) => (
-            <motion.a
+            // CHANGED motion.a to motion.div to remove the link
+            <motion.div
               layout
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.95 }}
               transition={{ duration: 0.3 }}
               key={s.title} // Use title as key for stability
-              href={`/services/${encodeURIComponent(s.title.toLowerCase().replace(/ /g, '-'))}`}
-              className="group block h-full"
+              className="group block h-full cursor-default" // Added cursor-default to indicate non-clickable
             >
               <div className="h-full p-6 rounded-xl border border-slate-700/50 bg-slate-800/30 hover:bg-slate-800 transition-all duration-300 relative overflow-hidden backdrop-blur-sm">
                 
@@ -67,12 +67,14 @@ export default function ServicesList() {
                     {s.desc}
                   </p>
 
+                  {/* Removed the Link/href from this section as well */}
                   <div className="flex items-center text-xs font-mono font-medium text-slate-500 group-hover:text-cyan-400 transition-colors mt-auto pt-4 border-t border-slate-700/50">
-                    ACCESS_PROTOCOL <ArrowRight size={14} className="ml-2 group-hover:translate-x-1 transition-transform" />
+                    ACCESS_PROTOCOL <ArrowRight size={14} className="ml-2 transition-transform" />
                   </div>
                 </div>
               </div>
-            </motion.a>
+            </motion.div>
+            // END CHANGE
           ))}
         </AnimatePresence>
       </motion.div>
